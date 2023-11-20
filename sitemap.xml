@@ -4,7 +4,7 @@
   <url>
     <loc>https://blog.demo.fan/posts/a1/</loc>
     
-    <lastmod>2023-11-19</lastmod>
+    <lastmod>2023-11-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,7 +13,7 @@
   <url>
     <loc>https://blog.demo.fan/posts/a2/</loc>
     
-    <lastmod>2023-11-19</lastmod>
+    <lastmod>2023-11-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -56,6 +56,13 @@
 
   
   <url>
+    <loc>https://blog.demo.fan/tags/%E5%9B%9E%E5%BF%86%E5%BD%95/</loc>
+    <lastmod>2023-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.demo.fan/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/</loc>
     <lastmod>2023-11-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -64,13 +71,6 @@
   
   <url>
     <loc>https://blog.demo.fan/tags/web3/</loc>
-    <lastmod>2023-11-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.demo.fan/tags/%E5%9B%9E%E5%BF%86%E5%BD%95/</loc>
     <lastmod>2023-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
