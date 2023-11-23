@@ -6,7 +6,7 @@
   <link href="https://blog.demo.fan/atom.xml" rel="self"/>
   
   <link href="https://blog.demo.fan/"/>
-  <updated>2023-11-21T13:41:27.500Z</updated>
+  <updated>2023-11-23T16:42:39.594Z</updated>
   <id>https://blog.demo.fan/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://blog.demo.fan/posts/a3/"/>
     <id>https://blog.demo.fan/posts/a3/</id>
     <published>2023-11-15T12:31:46.000Z</published>
-    <updated>2023-11-21T13:41:27.500Z</updated>
+    <updated>2023-11-23T16:42:39.594Z</updated>
     
     <content type="html"><![CDATA[<h1 id="分享一个我正在用的网盘"><a href="#分享一个我正在用的网盘" class="headerlink" title="分享一个我正在用的网盘"></a>分享一个我正在用的网盘</h1><p><strong>就是大名鼎鼎微软的OneDrive</strong><br>话说国内的网盘市场已经被百度网盘垄断了<br>百度网盘不付费的话，下载速度没得说，慢的一比<br>唯一的好处就是资源多<br>大家都在百度上分享链接<br>例如，<a href="http://www.yunpangou.com/">云盘狗</a><br>百度大而不倒</p><hr><h2 id="OneDrive"><a href="#OneDrive" class="headerlink" title="OneDrive"></a>OneDrive</h2><p>OneDrive好处就是有Office365，办公同步真方便<br>然后空间巨大，不限速<br>一定要taobao买一个商用版的，个人版的被墙了<br>找一个销量好的，5T空间也就20块<br>我买了一个25T的<br>然后用了RaiDrive_1.8.0挂载到个人电脑上<br>注意了一定要RaiDrive_1.8.0，不然没有写权限</p><hr><h2 id="OneDrive可以做私人网盘"><a href="#OneDrive可以做私人网盘" class="headerlink" title="OneDrive可以做私人网盘"></a>OneDrive可以做私人网盘</h2><p>搜索私人网盘搭建，网络上一堆堆攻略。<br>按照之前的经验来看，需要云服务器，开个新账户阿里腾讯云，买三年很便宜，博主都已经玩过一遍了。<br>推荐：Cloudreve</p><hr><h2 id="Web3存储"><a href="#Web3存储" class="headerlink" title="Web3存储"></a>Web3存储</h2><p>前几年Web3大爆发的时候，Web3存储横空出世，File这个cx币，刚出来的时候起飞上天，被称为以太之后的币⚪第三次创新革命。<br>从叙事上来说，Web3存储有些亮点，AR（arweave）通过简化数字世界 <strong>一次付款</strong>, <strong>永远存储</strong> ，数据可以维持200年，比只能维持20年的web2，超出一个数量级。<br>到底是画饼，还是确实，只能拭目以待了。Web3的世界起飞和爆炸往往都在几个瞬间。</p>]]></content>
     
