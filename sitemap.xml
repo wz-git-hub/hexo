@@ -2,7 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.demo.fan/posts/zt3/</loc>
+    <loc>https://blog.demo.fan/posts/a1/</loc>
+    
+    <lastmod>2023-12-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.demo.fan/posts/a6/</loc>
+    
+    <lastmod>2023-12-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.demo.fan/posts/a5/</loc>
+    
+    <lastmod>2023-12-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.demo.fan/posts/a3/</loc>
     
     <lastmod>2023-12-22</lastmod>
     
@@ -20,7 +47,7 @@
   </url>
   
   <url>
-    <loc>https://blog.demo.fan/posts/zt2/</loc>
+    <loc>https://blog.demo.fan/posts/zt3/</loc>
     
     <lastmod>2023-12-22</lastmod>
     
@@ -29,27 +56,9 @@
   </url>
   
   <url>
-    <loc>https://blog.demo.fan/posts/a1/</loc>
+    <loc>https://blog.demo.fan/posts/zt2/</loc>
     
-    <lastmod>2023-12-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.demo.fan/posts/a6/</loc>
-    
-    <lastmod>2023-12-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.demo.fan/posts/a5/</loc>
-    
-    <lastmod>2023-12-02</lastmod>
+    <lastmod>2023-12-22</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -83,15 +92,6 @@
   </url>
   
   <url>
-    <loc>https://blog.demo.fan/posts/a3/</loc>
-    
-    <lastmod>2023-11-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.demo.fan/categories/</loc>
     
     <lastmod>2023-11-19</lastmod>
@@ -117,13 +117,6 @@
   </url>
   
   <url>
-    <loc>https://blog.demo.fan/tags/%E5%9B%9E%E5%BF%86%E5%BD%95/</loc>
-    <lastmod>2023-12-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.demo.fan/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/</loc>
     <lastmod>2023-12-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -132,6 +125,13 @@
   
   <url>
     <loc>https://blog.demo.fan/tags/web3/</loc>
+    <lastmod>2023-12-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.demo.fan/tags/%E5%9B%9E%E5%BF%86%E5%BD%95/</loc>
     <lastmod>2023-12-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

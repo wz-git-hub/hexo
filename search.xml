@@ -14,59 +14,6 @@
       </tags>
   </entry>
   <entry>
-    <title>python输入实物码记录网卡IP及MAC地址</title>
-    <url>/posts/a6/</url>
-    <content><![CDATA[<h1 id="python输入实物码记录网卡IP及MAC地址"><a href="#python输入实物码记录网卡IP及MAC地址" class="headerlink" title="python输入实物码记录网卡IP及MAC地址"></a>python输入实物码记录网卡IP及MAC地址</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">insent_db</span>(<span class="params">adapter, mac, ipv4, swcode, sent_time</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        db = pymysql.connect(host=<span class="string">&quot;10.103.50.147&quot;</span>, port=<span class="number">3306</span>, user=<span class="string">&quot;crrcuser&quot;</span>, password=<span class="string">&quot;abc.123456&quot;</span>, database=<span class="string">&quot;gsdata&quot;</span>,</span><br><span class="line">                             charset=<span class="string">&quot;utf8&quot;</span>)</span><br><span class="line">        cursor= db.cursor()</span><br><span class="line">        db.ping(reconnect=<span class="literal">True</span>)</span><br><span class="line">        new_list_1 = []</span><br><span class="line">        tup_1 = (adapter, mac, ipv4, swcode, sent_time)</span><br><span class="line">        new_list_1.append(tup_1)</span><br><span class="line">        sql = <span class="string">&quot;insert into MAC_Collect(adapter, mac, ipv4, swcode, sent_time) values(%s, %s, %s, %s, %s)&quot;</span></span><br><span class="line">        cursor.executemany(sql, new_list_1)</span><br><span class="line">        db.commit()<span class="comment"># 提交数据库执行</span></span><br><span class="line">        cursor.close()</span><br><span class="line">        db.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> sys.exc_info()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">PrintNetIfAddr</span>():</span><br><span class="line">  <span class="string">&quot;&quot;&quot; 打印多网卡 mac 和 ip 信息 &quot;&quot;&quot;</span></span><br><span class="line">  swcode = <span class="built_in">input</span>(<span class="string">&quot;请输入实物码（实物码以SW开头）:&quot;</span>)</span><br><span class="line">  <span class="keyword">if</span> swcode[:<span class="number">2</span>] != <span class="string">&quot;SW&quot;</span> <span class="keyword">and</span> swcode[:<span class="number">2</span>] != <span class="string">&quot;sw&quot;</span>:</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&quot;实物码输入错误，请输入正确实物码（实物码以SW开头）！&quot;</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">  dic = psutil.net_if_addrs()</span><br><span class="line">  <span class="keyword">for</span> adapter <span class="keyword">in</span> dic:</span><br><span class="line">      snicList = dic[adapter]</span><br><span class="line">      mac = <span class="string">&#x27;无 mac 地址&#x27;</span></span><br><span class="line">      ipv4 = <span class="string">&#x27;无 ipv4 地址&#x27;</span></span><br><span class="line">      <span class="keyword">for</span> snic <span class="keyword">in</span> snicList:</span><br><span class="line">          <span class="keyword">if</span> snic.family.name <span class="keyword">in</span> &#123;<span class="string">&#x27;AF_LINK&#x27;</span>, <span class="string">&#x27;AF_PACKET&#x27;</span>&#125;:</span><br><span class="line">              mac = snic.address</span><br><span class="line">          <span class="keyword">elif</span> snic.family.name == <span class="string">&#x27;AF_INET&#x27;</span>:</span><br><span class="line">              ipv4 = snic.address</span><br><span class="line">      <span class="keyword">if</span> mac == <span class="string">&#x27;无 mac 地址&#x27;</span>:</span><br><span class="line">          <span class="keyword">continue</span></span><br><span class="line">      <span class="keyword">if</span> <span class="string">&quot;蓝牙&quot;</span> <span class="keyword">in</span> adapter:</span><br><span class="line">          <span class="keyword">continue</span></span><br><span class="line">      <span class="keyword">if</span> ipv4[:<span class="number">2</span>] != <span class="string">&quot;10&quot;</span>:</span><br><span class="line">          <span class="keyword">continue</span></span><br><span class="line">      sent_time = datetime.datetime.now().strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span><br><span class="line">      insent_db_str = insent_db(adapter, mac, ipv4, swcode, sent_time)</span><br><span class="line">      <span class="keyword">if</span> insent_db_str:</span><br><span class="line">          <span class="keyword">return</span> insent_db_str</span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">&quot;成功上传数据：&quot;</span>,<span class="string">&#x27;%s, %s, %s, %s, %s&#x27;</span> % (adapter, mac, ipv4, swcode, sent_time))</span><br><span class="line">          <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;内网没有符合要求的MAC&quot;</span></span><br><span class="line">pro_end = PrintNetIfAddr()</span><br><span class="line"><span class="keyword">if</span> pro_end:</span><br><span class="line">    <span class="built_in">print</span>(pro_end)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;失败，按下任意键以退出程序&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;成功，按下任意键以退出程序&quot;</span>)</span><br><span class="line"><span class="built_in">input</span>()</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>分享</category>
-      </categories>
-      <tags>
-        <tag>分享</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记录十几年的折腾资产之路（一）</title>
-    <url>/posts/zt1/</url>
-    <content><![CDATA[<h1 id="记录十几年的折腾资产之路（一）"><a href="#记录十几年的折腾资产之路（一）" class="headerlink" title="记录十几年的折腾资产之路（一）"></a>记录十几年的折腾资产之路（一）</h1><p><strong>我的投资史，其实就是工作史，也算是成长史</strong></p>
-<ol>
-<li>1990-2012，无产阶级</li>
-<li>2012-2015，无投资阶段</li>
-<li>2015-2019，国内投资阶段</li>
-<li>2019-2021，国外投资阶段</li>
-<li>2021-2022，数藏投资阶段</li>
-<li>2022-至今，币圈投资</li>
-</ol>
-<h2 id="1990-2012，无产阶级"><a href="#1990-2012，无产阶级" class="headerlink" title="1990-2012，无产阶级"></a>1990-2012，无产阶级</h2><p><strong>22年的上学路</strong></p>
-<ul>
-<li>单纯的上学路，学习，玩；上大学前对钱没概念，也没有零用钱，家里普通的百姓。</li>
-<li>2018年上大学后，有了自己的生活费，但自己对未来的规划还停留在勤劳致富。我比较节省，生活费上并没有太大压力；没有勤工俭学，也没有太多花钱的地方。花销比较多的是上网吧，大四整了不到千元手机玩，那时iPhone4横空出世，有条件的同学都买了，我也买不起。</li>
-<li>对钱的想法是找个好工作，读了重点大学，希望1月1w的工作，当时想来是很高了，回头来看，比较少了。</li>
-</ul>
-<h2 id="2012-2015，无投资阶段"><a href="#2012-2015，无投资阶段" class="headerlink" title="2012-2015，无投资阶段"></a>2012-2015，无投资阶段</h2><p><strong>毕业后，经历一段波折，最终还是步入社会</strong></p>
-<ul>
-<li>刚工作的时期，工资是很低的，同时想的是怎么快速成长，融入工作圈，结识新朋友。闲暇的时候还是喜欢游戏，运动，买东西追赶潮流。13年买房，15年买车，家里面帮了忙，但自己都把工作的积蓄清空了。</li>
-<li>这段时期无投资其实是比较遗憾的事情，当时看过一些理财的书籍，知道价值投资，股市，基金，复利，年化收益。</li>
-<li>毕竟那时的冰糖橙可能不到RMB千元。很早就知道冰糖橙了，记忆模糊中是一个朋友亦或新闻中提及的。我喜欢游戏，对IT技术有天然的好感，当时觉得区块链是很酷的技术。</li>
-<li>14年的时候冰糖橙火了一把，清楚记得当时还体验了一把挖矿，又在网上买了几十块钱的冰糖橙，但当时真的没放在心上，没有保存下来。</li>
-</ul>
-<h2 id="2015-2019，国内投资阶段"><a href="#2015-2019，国内投资阶段" class="headerlink" title="2015-2019，国内投资阶段"></a>2015-2019，国内投资阶段</h2><p><strong>时间来到了15年，A股最活跃的一年</strong></p>
-<ul>
-<li>谈闻A股已经听麻了，其中最吸引人的故事，一个同事几千炒到了几十万，他亲口说是真的；但是后面崩盘，他只保了本出来。牛市的时候周围都在炒股，但我没积蓄，一直到年底，那时线上券商还不普遍，还要线下开户，拿着几万块钱，冲进了股市。</li>
-<li>刚进股市，不知道买啥标底，周围同事普遍不肯推荐，只能网上自学。最喜欢那些财经节目，听股评师吹牛，听多了就有冲动，但常常买进去，要么是涨一点，马上就跌下来，要么没什么动静，卖了之后狂拉。</li>
-<li>15年底到19年底差不多炒了3年，小亏没赚到钱，最深刻的一次炒新能源，涨了两个板，赚了快小万，突然回调利润全无，后面大盘崩盘直接亏损。</li>
-<li>对A股没有感情，不管短拿长拿都不好赚钱，很多个股几年没有涨幅，能翻倍的股票就像中彩票，太难了。一入股市深似海，千金散尽不复来，追涨杀跌是常态，从此君郎是韭菜。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Docs文檔</category>
-      </categories>
-      <tags>
-        <tag>回忆录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>xLog+Crossbell区块链</title>
     <url>/posts/a1/</url>
     <content><![CDATA[<ul>
@@ -136,7 +83,7 @@
 </ul>
 <p><strong>ibox做了几件事，现在来看仍然是炒作典范：</strong></p>
 <ol>
-<li>变更经营团队，原有火币ibox退出，18策划ibox，虽然新团队，但是ibox老平台底蕴还在，老玩家还是怀念21年9月ibox横空出世那一波牛市。</li>
+<li>变更经营团队，原有火币ibox退出，18策划ibox，虽然新团队，但是ibox老平台底蕴还在，老玩家还是怀念21年横空出世的时光。</li>
 <li>18对于数藏圈是名人，是非常有争议的，被套的恨之入骨，获利的非常尊敬。同时18是炒图始俑，某种意义上使数藏变了味，但炒作的方式让人佩服。</li>
 <li>那时期主流玩法是创世藏品，但是时间长了，大家对创世藏品疲劳了，创世藏品难抢，抢不过机器人，后来优化成中签，也搞不过大量注册党。ibox首先突围，18提出平台所有藏品都可能有优先购，这样盘活了所有藏品，概率上让每个藏品都有生钱的可能。资金盘就是炒预期，强烈的生财预期驱使每一个投机者买入；适逢那时还是牛市，ibox耳目一新的玩法，刺激了市场暴涨。</li>
 <li>亲自在社区中画饼，在数藏圈策划与藏家互动的最多可能是18，从一进ibox，18就组织开会，当时腾讯会议还很热闹。微信群可能上百个，18每天每个群冒出来说话，画饼说平台会更好，潜台词是藏品价格会涨。</li>
@@ -148,6 +95,19 @@
       </categories>
       <tags>
         <tag>回忆录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python输入实物码记录网卡IP及MAC地址</title>
+    <url>/posts/a6/</url>
+    <content><![CDATA[<h1 id="python输入实物码记录网卡IP及MAC地址"><a href="#python输入实物码记录网卡IP及MAC地址" class="headerlink" title="python输入实物码记录网卡IP及MAC地址"></a>python输入实物码记录网卡IP及MAC地址</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">insent_db</span>(<span class="params">adapter, mac, ipv4, swcode, sent_time</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        db = pymysql.connect(host=<span class="string">&quot;10.103.50.147&quot;</span>, port=<span class="number">3306</span>, user=<span class="string">&quot;crrcuser&quot;</span>, password=<span class="string">&quot;abc.123456&quot;</span>, database=<span class="string">&quot;gsdata&quot;</span>,</span><br><span class="line">                             charset=<span class="string">&quot;utf8&quot;</span>)</span><br><span class="line">        cursor= db.cursor()</span><br><span class="line">        db.ping(reconnect=<span class="literal">True</span>)</span><br><span class="line">        new_list_1 = []</span><br><span class="line">        tup_1 = (adapter, mac, ipv4, swcode, sent_time)</span><br><span class="line">        new_list_1.append(tup_1)</span><br><span class="line">        sql = <span class="string">&quot;insert into MAC_Collect(adapter, mac, ipv4, swcode, sent_time) values(%s, %s, %s, %s, %s)&quot;</span></span><br><span class="line">        cursor.executemany(sql, new_list_1)</span><br><span class="line">        db.commit()<span class="comment"># 提交数据库执行</span></span><br><span class="line">        cursor.close()</span><br><span class="line">        db.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> sys.exc_info()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">PrintNetIfAddr</span>():</span><br><span class="line">  <span class="string">&quot;&quot;&quot; 打印多网卡 mac 和 ip 信息 &quot;&quot;&quot;</span></span><br><span class="line">  swcode = <span class="built_in">input</span>(<span class="string">&quot;请输入实物码（实物码以SW开头）:&quot;</span>)</span><br><span class="line">  <span class="keyword">if</span> swcode[:<span class="number">2</span>] != <span class="string">&quot;SW&quot;</span> <span class="keyword">and</span> swcode[:<span class="number">2</span>] != <span class="string">&quot;sw&quot;</span>:</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&quot;实物码输入错误，请输入正确实物码（实物码以SW开头）！&quot;</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">  dic = psutil.net_if_addrs()</span><br><span class="line">  <span class="keyword">for</span> adapter <span class="keyword">in</span> dic:</span><br><span class="line">      snicList = dic[adapter]</span><br><span class="line">      mac = <span class="string">&#x27;无 mac 地址&#x27;</span></span><br><span class="line">      ipv4 = <span class="string">&#x27;无 ipv4 地址&#x27;</span></span><br><span class="line">      <span class="keyword">for</span> snic <span class="keyword">in</span> snicList:</span><br><span class="line">          <span class="keyword">if</span> snic.family.name <span class="keyword">in</span> &#123;<span class="string">&#x27;AF_LINK&#x27;</span>, <span class="string">&#x27;AF_PACKET&#x27;</span>&#125;:</span><br><span class="line">              mac = snic.address</span><br><span class="line">          <span class="keyword">elif</span> snic.family.name == <span class="string">&#x27;AF_INET&#x27;</span>:</span><br><span class="line">              ipv4 = snic.address</span><br><span class="line">      <span class="keyword">if</span> mac == <span class="string">&#x27;无 mac 地址&#x27;</span>:</span><br><span class="line">          <span class="keyword">continue</span></span><br><span class="line">      <span class="keyword">if</span> <span class="string">&quot;蓝牙&quot;</span> <span class="keyword">in</span> adapter:</span><br><span class="line">          <span class="keyword">continue</span></span><br><span class="line">      <span class="keyword">if</span> ipv4[:<span class="number">2</span>] != <span class="string">&quot;10&quot;</span>:</span><br><span class="line">          <span class="keyword">continue</span></span><br><span class="line">      sent_time = datetime.datetime.now().strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span><br><span class="line">      insent_db_str = insent_db(adapter, mac, ipv4, swcode, sent_time)</span><br><span class="line">      <span class="keyword">if</span> insent_db_str:</span><br><span class="line">          <span class="keyword">return</span> insent_db_str</span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">&quot;成功上传数据：&quot;</span>,<span class="string">&#x27;%s, %s, %s, %s, %s&#x27;</span> % (adapter, mac, ipv4, swcode, sent_time))</span><br><span class="line">          <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;内网没有符合要求的MAC&quot;</span></span><br><span class="line">pro_end = PrintNetIfAddr()</span><br><span class="line"><span class="keyword">if</span> pro_end:</span><br><span class="line">    <span class="built_in">print</span>(pro_end)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;失败，按下任意键以退出程序&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;成功，按下任意键以退出程序&quot;</span>)</span><br><span class="line"><span class="built_in">input</span>()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>分享</category>
+      </categories>
+      <tags>
+        <tag>分享</tag>
       </tags>
   </entry>
   <entry>
@@ -168,6 +128,46 @@
 <li>当时最火的是defi抵押借贷，还有流动挖矿，新概念天天吹，吹的我也着了魔，又把钱拿出来一部分，前后用defi借贷，一口气拿了快三十多个以太（依稀记得260u以上的成本），意淫着起飞。结果天天跌，没多久跌了两三成，卧槽，心里滴血。</li>
 <li>疫情来了，币圈和美股有同步，不同的是币圈只用了一个晚上。我清楚的记得是一个寒风阵阵的傍晚，暴跌，3k大饼，80u的以太都看到过，仓位都快到脚脖子了。紧接着第二天行情也没太起来，恐怖的是defi抵押借贷快触及平仓线，那样就爆仓归零了，连忙又拿应急的钱买了5千rmb的以太。</li>
 <li>之后对币圈有点灰心了，亏了几万，也不舍得割肉，但神奇的也是，疫情的时候那么恐慌，币价却没怎么再跌。我套了大半年，神奇的又回来了，后面nft爆火，我不干寂寞又卖了以太，玩别的去了，成功错过了21年币圈大牛。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Docs文檔</category>
+      </categories>
+      <tags>
+        <tag>回忆录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记录十几年的折腾资产之路（一）</title>
+    <url>/posts/zt1/</url>
+    <content><![CDATA[<h1 id="记录十几年的折腾资产之路（一）"><a href="#记录十几年的折腾资产之路（一）" class="headerlink" title="记录十几年的折腾资产之路（一）"></a>记录十几年的折腾资产之路（一）</h1><p><strong>我的投资史，其实就是工作史，也算是成长史</strong></p>
+<ol>
+<li>1990-2012，无产阶级</li>
+<li>2012-2015，无投资阶段</li>
+<li>2015-2019，国内投资阶段</li>
+<li>2019-2021，国外投资阶段</li>
+<li>2021-2022，数藏投资阶段</li>
+<li>2022-至今，币圈投资</li>
+</ol>
+<h2 id="1990-2012，无产阶级"><a href="#1990-2012，无产阶级" class="headerlink" title="1990-2012，无产阶级"></a>1990-2012，无产阶级</h2><p><strong>22年的上学路</strong></p>
+<ul>
+<li>单纯的上学路，学习，玩；上大学前对钱没概念，也没有零用钱，家里普通的百姓。</li>
+<li>2018年上大学后，有了自己的生活费，但自己对未来的规划还停留在勤劳致富。我比较节省，生活费上并没有太大压力；没有勤工俭学，也没有太多花钱的地方。花销比较多的是上网吧，大四整了不到千元手机玩，那时iPhone4横空出世，有条件的同学都买了，我也买不起。</li>
+<li>对钱的想法是找个好工作，读了重点大学，希望1月1w的工作，当时想来是很高了，回头来看，比较少了。</li>
+</ul>
+<h2 id="2012-2015，无投资阶段"><a href="#2012-2015，无投资阶段" class="headerlink" title="2012-2015，无投资阶段"></a>2012-2015，无投资阶段</h2><p><strong>毕业后，经历一段波折，最终还是步入社会</strong></p>
+<ul>
+<li>刚工作的时期，工资是很低的，同时想的是怎么快速成长，融入工作圈，结识新朋友。闲暇的时候还是喜欢游戏，运动，买东西追赶潮流。13年买房，15年买车，家里面帮了忙，但自己都把工作的积蓄清空了。</li>
+<li>这段时期无投资其实是比较遗憾的事情，当时看过一些理财的书籍，知道价值投资，股市，基金，复利，年化收益。</li>
+<li>毕竟那时的冰糖橙可能不到RMB千元。很早就知道冰糖橙了，记忆模糊中是一个朋友亦或新闻中提及的。我喜欢游戏，对IT技术有天然的好感，当时觉得区块链是很酷的技术。</li>
+<li>14年的时候冰糖橙火了一把，清楚记得当时还体验了一把挖矿，又在网上买了几十块钱的冰糖橙，但当时真的没放在心上，没有保存下来。</li>
+</ul>
+<h2 id="2015-2019，国内投资阶段"><a href="#2015-2019，国内投资阶段" class="headerlink" title="2015-2019，国内投资阶段"></a>2015-2019，国内投资阶段</h2><p><strong>时间来到了15年，A股最活跃的一年</strong></p>
+<ul>
+<li>谈闻A股已经听麻了，其中最吸引人的故事，一个同事几千炒到了几十万，他亲口说是真的；但是后面崩盘，他只保了本出来。牛市的时候周围都在炒股，但我没积蓄，一直到年底，那时线上券商还不普遍，还要线下开户，拿着几万块钱，冲进了股市。</li>
+<li>刚进股市，不知道买啥标底，周围同事普遍不肯推荐，只能网上自学。最喜欢那些财经节目，听股评师吹牛，听多了就有冲动，但常常买进去，要么是涨一点，马上就跌下来，要么没什么动静，卖了之后狂拉。</li>
+<li>15年底到19年底差不多炒了3年，小亏没赚到钱，最深刻的一次炒新能源，涨了两个板，赚了快小万，突然回调利润全无，后面大盘崩盘直接亏损。</li>
+<li>对A股没有感情，不管短拿长拿都不好赚钱，很多个股几年没有涨幅，能翻倍的股票就像中彩票，太难了。一入股市深似海，千金散尽不复来，追涨杀跌是常态，从此君郎是韭菜。</li>
 </ul>
 ]]></content>
       <categories>
